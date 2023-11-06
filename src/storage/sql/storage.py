@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
-from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
+from sqlalchemy.ext.asyncio import (AsyncEngine, AsyncSession,
+                                    async_sessionmaker)
 
 
 class AbstractSQLAlchemyStorage(ABC):
@@ -19,11 +20,11 @@ class AbstractSQLAlchemyStorage(ABC):
 
 class PostgresSQLAlchemyStorage(AbstractSQLAlchemyStorage):
     engine: AsyncEngine
-    sessionmaker: async_sessionmaker
+    session_maker: async_sessionmaker
 
     def __init__(self, engine: AsyncEngine) -> None:
         self.engine = engine
-        self.sessionmaker = async_sessionmaker(expire_on_commit=False, bind=self.engine)
+        self.session_maker = async_sessionmaker(expire_on_commit=False, bind=self.engine)
 
     @classmethod
     def from_url(cls, url: str) -> "PostgresSQLAlchemyStorage":
@@ -33,7 +34,7 @@ class PostgresSQLAlchemyStorage(AbstractSQLAlchemyStorage):
         return cls(engine)
 
     def create_session(self) -> AsyncSession:
-        return self.sessionmaker()
+        return self.session_maker()
 
     async def create_all(self) -> None:
         from src.storage.sql.models import Base
