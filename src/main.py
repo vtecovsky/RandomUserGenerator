@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from src.api.dependencies import Dependencies
 from src.api.routers import routers
 from src.config import settings
-from src.repositories.currency.repository import SqlCurrencyRepository
+from src.repositories.user.repository import SqlUserRepository
 from src.storage.sql import PostgresSQLAlchemyStorage
 
 app = FastAPI()
@@ -11,9 +11,7 @@ app = FastAPI()
 
 async def setup_repositories():
     storage = PostgresSQLAlchemyStorage.from_url(settings.DB_URL)
-    currency_repository = SqlCurrencyRepository(storage)
-    Dependencies.set_storage(storage)
-    Dependencies.set_currency_repository(currency_repository)
+    currency_repository = SqlUserRepository(storage)
 
 
 @app.on_event("startup")
