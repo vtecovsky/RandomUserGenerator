@@ -1,10 +1,10 @@
-from sqlalchemy import select
-from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.repositories.users.abc import AbstractUserRepository
+from src.schemas.users import User
 from src.storage.sql import AbstractSQLAlchemyStorage
-from src.storage.sql.models import Currency
+from src.storage.sql.models import User as UserModel
 
 
 class SqlUserRepository(AbstractUserRepository):
@@ -16,8 +16,19 @@ class SqlUserRepository(AbstractUserRepository):
     def _create_session(self) -> AsyncSession:
         return self.storage.create_session()
 
-    async def some_func(self):
+    async def setup_users(self, users: list[User]):
         async with self._create_session() as session:
-            query = select(Currency.name)
-            selected_obj = await session.scalar(query)
-            return selected_obj
+            users_data = [
+                {
+                    "fullname": user.fullname,
+                    "gender": user.gender,
+                    "age": user.age,
+                    "address": user.address,
+                    "email": user.email,
+                    "username": user.username,
+                }
+                for user in users
+            ]
+            query = insert(UserModel).values(users_data)
+            await session.execute(query)
+            await session.commit()

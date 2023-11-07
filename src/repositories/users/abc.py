@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod
 
+from src.schemas.users import User
+
 
 class AbstractUserRepository(ABC):
     @abstractmethod
-    async def some_func(self):
-        raise NotImplementedError()
+    async def setup_users(self, users: list[User]):
+        ...

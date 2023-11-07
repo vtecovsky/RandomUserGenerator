@@ -14,9 +14,12 @@ async def setup_dependencies():
     user_repository = SqlUserRepository(storage)
     Dependencies.set_storage(storage)
     Dependencies.set_user_repository(user_repository)
+    user_service = Dependencies.get_user_service()
 
-    await storage.drop_all()
-    await storage.create_all()
+    await user_service.setup_random_users()
+
+    # await storage.drop_all()
+    # await storage.create_all()
 
 
 @app.on_event("startup")

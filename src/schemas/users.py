@@ -2,9 +2,9 @@ from pydantic import BaseModel
 
 
 class User(BaseModel):
-    sex: str
-    age: int
     fullname: str
+    gender: str
+    age: int
     address: str
     email: str
     username: str
