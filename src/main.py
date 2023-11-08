@@ -22,6 +22,7 @@ async def setup_dependencies():
     # await storage.create_all()
 
 
+
 @app.on_event("startup")
 async def startup_event():
     await setup_dependencies()

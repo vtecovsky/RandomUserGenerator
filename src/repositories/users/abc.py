@@ -11,6 +11,7 @@ class AbstractUserRepository(ABC):
     @abstractmethod
     async def get_random_users(self, ids: list[int]):
         ...
+
     @abstractmethod
     async def are_users_setup(self):
         ...

@@ -42,6 +42,6 @@ class SqlUserRepository(AbstractUserRepository):
 
     async def are_users_setup(self):
         async with self._create_session() as session:
-            query = select(UserModel)
-            result = await session.execute(query)
-            return False if not result else True
+            query = select(UserModel.id)
+            users = await session.scalar(query)
+            return True if users is not None else False
