@@ -23,7 +23,7 @@ class UserService:
     @staticmethod
     def __generate_email(fullname: str) -> str:
         name_parts = fullname.split(" ")
-        firstname = name_parts[0]
+        firstname = name_parts[0].replace(".", "")
         lastname = "_".join(name_parts[1:])
         return f"{firstname.lower()}_{lastname.lower()}@example.com"
 
@@ -43,7 +43,7 @@ class UserService:
             fullname = UserService.__generate_fullname(gender)
             gender = gender
             age = random.randint(1, 114)
-            address = fake.unique.address()
+            address = (fake.unique.address()).replace("\n", " ")
             email = UserService.__generate_email(fullname)
             username = fake.unique.user_name()
             user = User(
@@ -55,7 +55,6 @@ class UserService:
                 username=username,
             )
             users.append(user)
-        fake.clear()
         return users
 
     @staticmethod
