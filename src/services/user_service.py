@@ -37,7 +37,14 @@ class UserService:
             address = fake.unique.address()
             email = UserService.__generate_email(fullname)
             username = fake.unique.user_name()
-            user = User(gender=gender, fullname=fullname, age=age, address=address, email=email, username=username)
+            user = User(
+                gender=gender,
+                fullname=fullname,
+                age=age,
+                address=address,
+                email=email,
+                username=username,
+            )
             users.append(user)
         return users
 

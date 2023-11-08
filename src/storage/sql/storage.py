@@ -24,7 +24,9 @@ class PostgresSQLAlchemyStorage(AbstractSQLAlchemyStorage):
 
     def __init__(self, engine: AsyncEngine) -> None:
         self.engine = engine
-        self.session_maker = async_sessionmaker(expire_on_commit=False, bind=self.engine)
+        self.session_maker = async_sessionmaker(
+            expire_on_commit=False, bind=self.engine
+        )
 
     @classmethod
     def from_url(cls, url: str) -> "PostgresSQLAlchemyStorage":
