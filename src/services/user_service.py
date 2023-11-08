@@ -23,12 +23,20 @@ class UserService:
     def __generate_email(fullname: str) -> str:
         name_parts = fullname.split(" ")
         firstname = name_parts[0]
-        lastname = " ".join(name_parts[1:])
-        return f"{firstname.lower()}.{lastname.lower()}@example.com"
+        lastname = "_".join(name_parts[1:])
+        return f"{firstname.lower()}_{lastname.lower()}@example.com"
+
+    @staticmethod
+    def __generate_unique_ints(n: int) -> list[int]:
+        unique_nums = set()
+        while len(unique_nums) < n:
+            random_number = fake.random_int(min=0, max=1000)
+            unique_nums.add(random_number)
+        return list(unique_nums)
 
     async def __generate_random_users(self) -> list[User]:
         users: list[User] = []
-        genders = ["F", "M"]
+        genders = ("F", "M")
         for _ in range(self.__max_unique_users):
             gender = random.choice(genders)
             fullname = UserService.__generate_fullname(gender)
@@ -51,3 +59,7 @@ class UserService:
     async def setup_random_users(self):
         users = await self.__generate_random_users()
         await self.user_repo.setup_users(users)
+
+    async def get_random_users(self, n: int):
+        unique_nums = UserService.__generate_unique_ints(n)
+        return await self.user_repo.get_random_users(unique_nums)

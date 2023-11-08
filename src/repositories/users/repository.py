@@ -32,3 +32,10 @@ class SqlUserRepository(AbstractUserRepository):
             query = insert(UserModel).values(users_data)
             await session.execute(query)
             await session.commit()
+
+    async def get_random_users(self, ids: list[int]):
+        async with self._create_session() as session:
+            query = select(UserModel).filter(UserModel.id.in_(ids))
+            result = await session.execute(query)
+            random_users = result.scalars().all()
+            return [User.model_validate(user) for user in random_users]

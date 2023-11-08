@@ -11,6 +11,9 @@ fastapi = "^0.104.1"
 uvicorn = "^0.24.0.post1"
 pydantic-settings = "^2.0.3"
 faker = "^19.13.0"
+sqlalchemy = "^2.0.23"
+asyncpg = "^0.29.0"
+greenlet = "^3.0.1"
 
 
 [build-system]
