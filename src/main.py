@@ -15,10 +15,11 @@ async def setup_dependencies():
     Dependencies.set_storage(storage)
     Dependencies.set_user_repository(user_repository)
     user_service = Dependencies.get_user_service()
+    if not await user_service.are_users_setup():
+        await user_service.setup_random_users()
 
     # await storage.drop_all()
     # await storage.create_all()
-    # await user_service.setup_random_users()
 
 
 @app.on_event("startup")

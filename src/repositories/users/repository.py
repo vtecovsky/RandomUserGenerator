@@ -39,3 +39,9 @@ class SqlUserRepository(AbstractUserRepository):
             result = await session.execute(query)
             users = result.scalars().all()
             return [User.model_validate(user) for user in users]
+
+    async def are_users_setup(self):
+        async with self._create_session() as session:
+            query = select(UserModel)
+            result = await session.execute(query)
+            return False if not result else True

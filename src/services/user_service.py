@@ -70,3 +70,6 @@ class UserService:
         UserService.validate_n(n)
         unique_nums = UserService.__generate_unique_ints(n)
         return await self.user_repo.get_random_users(unique_nums)
+
+    async def are_users_setup(self):
+        return await self.user_repo.are_users_setup()
