@@ -2,6 +2,7 @@ import random
 
 from faker import Faker
 
+from src.exceptions import InvalidQueryParam
 from src.repositories.users.abc import AbstractUserRepository
 from src.schemas.users import User
 
@@ -54,12 +55,19 @@ class UserService:
                 username=username,
             )
             users.append(user)
+        fake.clear()
         return users
+
+    @staticmethod
+    def validate_n(n):
+        if n < 0 or n > 1000:
+            raise InvalidQueryParam()
 
     async def setup_random_users(self):
         users = await self.__generate_random_users()
         await self.user_repo.setup_users(users)
 
     async def get_random_users(self, n: int):
+        UserService.validate_n(n)
         unique_nums = UserService.__generate_unique_ints(n)
         return await self.user_repo.get_random_users(unique_nums)

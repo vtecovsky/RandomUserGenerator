@@ -14,19 +14,7 @@ class CurrencyNotFound(HTTPException):
         )
 
 
-class NoLastUpdate(HTTPException):
-    """
-    HTTP_404_NOT_FOUND
-    """
-
-    def __init__(self):
-        super().__init__(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="There are no updates yet",
-        )
-
-
-class ErrorFromExternalAPI(HTTPException):
+class InvalidQueryParam(HTTPException):
     """
     HTTP_400_BAD_REQUEST
     """
@@ -34,17 +22,5 @@ class ErrorFromExternalAPI(HTTPException):
     def __init__(self):
         super().__init__(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Fail in retrieve data from external API",
-        )
-
-
-class NegativeAmountOfMoney(HTTPException):
-    """
-    HTTP_400_BAD_REQUEST
-    """
-
-    def __init__(self):
-        super().__init__(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Amount of money should not be negative",
+            detail="N should be non-negative and less or equal 1000.",
         )
