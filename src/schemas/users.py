@@ -1,7 +1,7 @@
 from pydantic import BaseModel, ConfigDict
 
 
-class User(BaseModel):
+class RandomUser(BaseModel):
     fullname: str
     gender: str
     age: int
@@ -10,3 +10,8 @@ class User(BaseModel):
     username: str
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class RandomUserResponse(BaseModel):
+    quantity: int
+    users: list[RandomUser]

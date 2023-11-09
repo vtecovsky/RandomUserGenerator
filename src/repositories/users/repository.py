@@ -2,7 +2,7 @@ from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.repositories.users.abc import AbstractUserRepository
-from src.schemas.users import User
+from src.schemas.users import RandomUser
 from src.storage.sql import AbstractSQLAlchemyStorage
 from src.storage.sql.models import User as UserModel
 
@@ -16,7 +16,7 @@ class SqlUserRepository(AbstractUserRepository):
     def _create_session(self) -> AsyncSession:
         return self.storage.create_session()
 
-    async def setup_users(self, users: list[User]):
+    async def setup_users(self, users: list[RandomUser]):
         async with self._create_session() as session:
             users_data = [
                 {
@@ -38,7 +38,7 @@ class SqlUserRepository(AbstractUserRepository):
             query = select(UserModel).filter(UserModel.id.in_(ids))
             result = await session.execute(query)
             users = result.scalars().all()
-            return [User.model_validate(user) for user in users]
+            return [RandomUser.model_validate(user) for user in users]
 
     async def are_users_setup(self):
         async with self._create_session() as session:

@@ -4,7 +4,7 @@ from faker import Faker
 
 from src.exceptions import InvalidQueryParam
 from src.repositories.users.abc import AbstractUserRepository
-from src.schemas.users import User
+from src.schemas.users import RandomUser, RandomUserResponse
 
 fake = Faker()
 
@@ -35,8 +35,8 @@ class UserService:
             unique_nums.add(random_number)
         return list(unique_nums)
 
-    async def __generate_random_users(self) -> list[User]:
-        users: list[User] = []
+    async def __generate_random_users(self) -> list[RandomUser]:
+        users: list[RandomUser] = []
         genders = ("F", "M")
         for _ in range(self.__max_unique_users):
             gender = random.choice(genders)
@@ -46,7 +46,7 @@ class UserService:
             address = (fake.unique.address()).replace("\n", " ")
             email = UserService.__generate_email(fullname)
             username = fake.unique.user_name()
-            user = User(
+            user = RandomUser(
                 gender=gender,
                 fullname=fullname,
                 age=age,
@@ -69,7 +69,8 @@ class UserService:
     async def get_random_users(self, n: int):
         UserService.validate_n(n)
         unique_nums = UserService.__generate_unique_ints(n)
-        return await self.user_repo.get_random_users(unique_nums)
+        users = await self.user_repo.get_random_users(unique_nums)
+        return RandomUserResponse(quantity=n, users=users)
 
     async def are_users_setup(self):
         return await self.user_repo.are_users_setup()
