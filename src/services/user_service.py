@@ -42,7 +42,7 @@ class UserService:
             gender = random.choice(genders)
             fullname = UserService.__generate_fullname(gender)
             gender = gender
-            age = random.randint(1, 114)
+            age = random.randint(14, 114)
             address = (fake.unique.address()).replace("\n", " ")
             email = UserService.__generate_email(fullname)
             username = fake.unique.user_name()

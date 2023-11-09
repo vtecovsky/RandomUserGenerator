@@ -16,7 +16,6 @@ async def setup_dependencies():
     Dependencies.set_user_repository(user_repository)
     user_service = Dependencies.get_user_service()
 
-    await storage.drop_all()
     await storage.create_all()
     if not await user_service.are_users_setup():
         await user_service.setup_random_users()

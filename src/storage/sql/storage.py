@@ -20,11 +20,11 @@ class AbstractSQLAlchemyStorage(ABC):
 
 class PostgresSQLAlchemyStorage(AbstractSQLAlchemyStorage):
     engine: AsyncEngine
-    session_maker: async_sessionmaker
+    sessionmaker: async_sessionmaker
 
     def __init__(self, engine: AsyncEngine) -> None:
         self.engine = engine
-        self.session_maker = async_sessionmaker(
+        self.sessionmaker = async_sessionmaker(
             expire_on_commit=False, bind=self.engine
         )
 
@@ -36,7 +36,7 @@ class PostgresSQLAlchemyStorage(AbstractSQLAlchemyStorage):
         return cls(engine)
 
     def create_session(self) -> AsyncSession:
-        return self.session_maker()
+        return self.sessionmaker()
 
     async def create_all(self) -> None:
         from src.storage.sql.models import Base
